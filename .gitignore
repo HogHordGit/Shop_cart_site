@@ -1,0 +1,13 @@
+temp/
+*.bat
+
+# IntellijIdea files
+.idea/
+.DS_Store
+.jshintrc
+.idea/
+.vscode/
+node_modules/
+yarn.lock
+package-lock.json
+
