@@ -8,6 +8,7 @@ temp/
 .idea/
 .vscode/
 node_modules/
+sample/
 yarn.lock
 package-lock.json
 
