@@ -1,7 +1,7 @@
 const contentContainer = document.querySelector("#content-container");
 const cartCounterLabel = document.querySelector("#cart-counter-label");
 
-const headerContainer = document.querySelector(".navbar-collapse");
+const block = document.querySelector("#navbarSupportedContent");
 
 let Goods = [];
 let cartCounter = 0;
@@ -28,12 +28,13 @@ const enableControls = (t, func) => {
     contentContainer.addEventListener("click", func);
 };
 
-const getPhotoGood = (t) => {
-    let link = t.parentElement.parentElement.parentElement.firstElementChild.firstElementChild.src;
-
-    console.log(link);
-    // return replace(//);
-};
+const getImgGood = (t) => t.parentElement.
+                        parentElement.
+                        parentElement.
+                        firstElementChild.
+                        firstElementChild.
+                        src.
+                        replace(/\D+\d+\/(assets\/img\/\D+\d+.(png|jpg|jepg)$)/g, "$1");
 
 const getNameGood = (t) => t.parentElement.
                         parentElement.
@@ -59,6 +60,7 @@ const btnClickHandler = function(e) {
     if (target && target.classList.contains("item-actions__cart")) {
         cartCounter = incrementCounter(cartCounterLabel, cartCounter);
         cartPrise += getPrice(target, cartPrise);
+        updateCounter();
 
         disableControls(target, btnClickHandler);
 
@@ -73,11 +75,39 @@ const btnClickHandler = function(e) {
     }
 };
 
-//Cart_btn------------------------------------------------------
+//Cart_btn------------------------------------------------------------
+const blockText = document.createElement("div");
+
+function updateCounter() {
+    let text = null;
+
+    text = cartCounter === 1 ? "товар" : cartCounter > 1 && cartCounter < 5 ? "товара" : "товаров";
+
+    blockText.innerHTML = `В корзине ${cartCounter} ${text}`;
+}
+
+function makeLayout() {
+    const blockContainer = document.createElement("div");
+    const blockBody = document.createElement("div");
+    const blockSpan = document.createElement("span");
+
+    blockContainer.classList.add("navbar-collapse__block", "cart-block");
+    blockBody.classList.add("cart-block__body", "cart-body");
+    blockSpan.classList.add("cart-body__text-sm");
+
+    blockText.classList.add("cart-body__text");
+    blockText.innerHTML = `В корзине ${cartCounter} товаров`;
+    blockSpan.innerHTML = "Выберите товар и он появится здесь";
+
+    block.append(blockContainer);
+    blockContainer.append(blockBody);
+    blockBody.append(blockText);
+    blockBody.append(blockSpan);
+}
 
 function handleCart(e) {
+    const textZero = document.querySelector(".cart-body__text-sm");
     const block = document.querySelector(".cart-block");
-    const textZero = document.querySelector(".cart-zero");
 
     const target = e.target;
     
@@ -86,20 +116,50 @@ function handleCart(e) {
         block.classList.toggle("-active");
     }
     
-    if (cartCounter === 0) {
-        textZero.style.display = "block";
-    } else {
-        textZero.style.display = "none";
-        addGoodIntoArr(target);
+    if (target && target.classList.contains("item-actions__cart")){
+        if (cartCounter === 0) {
+            textZero.style.display = "block";
+        } else {
+            textZero.style.display = "none";
+            addGoodIntoArr(target);
+        }
     }
 }
 
-function addGoodIntoArr(t) {
-    let prise = getMockData(t);
-    let name = getNameGood(t);
-    getPhotoGood(t);
-
+function findName(arr, check) {
+    for (let i = 0; i < arr.length; i++) {
+        if (arr[i].name === check) {
+            arr[i].count += 1;
+            arr[i].totalPrice *= 2;
+            return true;
+        }
+    }
+    return false;
 }
+
+function addGoodIntoArr(t) {
+    if(cartCounter > 1) {
+        if (findName(Goods, getNameGood(t))) {
+            return;
+        }
+    }
+    
+    Goods.push(
+        {
+            name: getNameGood(t),
+            price: getMockData(t),
+            totalPrice: getMockData(t),
+            img: getImgGood(t),
+            count: 1
+        }
+    );
+}
+
+function readAndCreateFromArr() {
+    
+}
+
+makeLayout();
 
 contentContainer.addEventListener("click", btnClickHandler);
 document.body.addEventListener("click", handleCart);

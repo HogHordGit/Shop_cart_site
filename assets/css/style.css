@@ -8347,7 +8347,7 @@ a.text-dark:focus
     background-color: #2c71b8;
 }
 
-.cart-zero__text
+.cart-body__text
 {
     font-family: Arial, Helvetica, sans-serif;
     font-size: 18px;
@@ -8356,9 +8356,11 @@ a.text-dark:focus
 
     color: #fff;
 }
-.cart-zero__text-sm
+.cart-body__text-sm
 {
     font-size: 15px;
+
+    color: #fff;
 }
 
 .-active

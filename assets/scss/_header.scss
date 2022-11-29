@@ -165,7 +165,7 @@
   }
 }
 
-.cart-zero {
+.cart-body {
   &__text {
     font-family: Arial, Helvetica, sans-serif;
     text-align: center;
@@ -173,6 +173,7 @@
     color: #ffffff;
   }
   &__text-sm {
+    color: #ffffff;
     font-size: 15px;
   }
 }
