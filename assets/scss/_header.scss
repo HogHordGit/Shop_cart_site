@@ -137,4 +137,24 @@
 
 .fa-shopping-cart {
   font-size: 1.5rem;
-}
+}
+
+.navbar-collapse {
+  position: relative;
+
+  &__block {
+    position: absolute;
+    right: -2px;
+    top: 54px;
+
+    display: none;
+    width: 200px;
+    height: 200px;
+    background-color: #2C71B8;
+  }
+}
+
+.-active {
+  display: block;
+  z-index: 999;
+}
