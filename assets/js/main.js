@@ -76,7 +76,7 @@ const btnClickHandler = function(e) {
 };
 
 //Cart_btn------------------------------------------------------------
-const blockText = document.createElement("div");
+const blockText = document.querySelector(".cart-body__text");
 
 function updateCounter() {
     let text = null;
@@ -87,22 +87,9 @@ function updateCounter() {
 }
 
 function makeLayout() {
-    const blockContainer = document.createElement("div");
-    const blockBody = document.createElement("div");
-    const blockSpan = document.createElement("span");
 
-    blockContainer.classList.add("navbar-collapse__block", "cart-block");
-    blockBody.classList.add("cart-block__body", "cart-body");
-    blockSpan.classList.add("cart-body__text-sm");
-
-    blockText.classList.add("cart-body__text");
     blockText.innerHTML = `В корзине ${cartCounter} товаров`;
-    blockSpan.innerHTML = "Выберите товар и он появится здесь";
 
-    block.append(blockContainer);
-    blockContainer.append(blockBody);
-    blockBody.append(blockText);
-    blockBody.append(blockSpan);
 }
 
 function handleCart(e) {

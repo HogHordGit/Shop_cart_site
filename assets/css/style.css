@@ -8329,22 +8329,38 @@ a.text-dark:focus
     font-size: 1.5rem;
 }
 
-.navbar-collapse
-{
-    position: relative;
-}
 .navbar-collapse__block
 {
     position: absolute;
-    top: 54px;
-    right: -2px;
+    top: 13px;
+    right: 10px;
 
     display: none;
 
+    min-width: 300px;
     padding: 15px;
 
     border-radius: 12px 1px 12px 12px;
     background-color: #2c71b8;
+}
+.navbar-collapse__holder
+{
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+
+    height: 50px;
+
+    -webkit-box-align: end;
+    -ms-flex-align: end;
+    align-items: flex-end;
+}
+.navbar-collapse__focus-block
+{
+    position: relative;
+
+    width: 10px;
+    height: 10px;
 }
 
 .cart-body__text
@@ -8360,7 +8376,15 @@ a.text-dark:focus
 {
     font-size: 15px;
 
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+
     color: #fff;
+
+    -webkit-box-pack: center;
+    -ms-flex-pack: center;
+    justify-content: center;
 }
 
 .-active
@@ -13401,8 +13425,17 @@ body
 {
     .navbar-collapse__block
     {
-        top: 240px;
-        right: 17px;
+        top: 3px;
+        right: 16px;
+    }
+    .navbar-collapse__holder
+    {
+        width: 100%;
+        height: 0;
+
+        -webkit-box-pack: end;
+        -ms-flex-pack: end;
+        justify-content: flex-end;
     }
 }
 @media (max-width: 991px)
@@ -13486,6 +13519,16 @@ body
 {
     .navbar-collapse__block
     {
+        position: block;
+        right: 0;
+
+        width: 100%;
+
+        border-radius: 0;
+    }
+    .navbar-collapse__focus-block
+    {
+        position: absolute;
         right: 0;
 
         width: 100%;

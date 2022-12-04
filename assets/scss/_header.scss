@@ -142,12 +142,12 @@
 }
 
 .navbar-collapse {
-  position: relative;
-
   &__block {
     position: absolute;
-    right: -2px;
-    top: 54px;
+    min-width: 300px;
+
+    right: 10px;
+    top: 13px;
 
     border-radius: 12px 1px 12px 12px;
     padding: 15px;
@@ -155,10 +155,35 @@
     background-color: #2C71B8;
 
     @include lg {
-      top: 240px;
-      right: 17px;
+      top: 3px;
+      right: 16px;
     }
     @include sm {
+      position: block;
+      right: 0;
+      width: 100%;
+      border-radius: 0;
+    }
+  }
+  &__holder {
+    display: flex;
+    height: 50px;
+    align-items: flex-end;
+
+    @include lg {
+      height: 0;
+      width: 100%;
+      justify-content: flex-end;
+    }
+  }
+  &__focus-block {
+    position: relative;
+    width: 10px;
+    height: 10px;
+
+    @include sm {
+      position: absolute;
+
       right: 0;
       width: 100%;
     }
@@ -173,6 +198,8 @@
     color: #ffffff;
   }
   &__text-sm {
+    display: flex;
+    justify-content: center;
     color: #ffffff;
     font-size: 15px;
   }
@@ -182,3 +209,4 @@
   display: block;
   z-index: 999;
 }
+
