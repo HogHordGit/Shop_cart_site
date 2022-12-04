@@ -141,16 +141,18 @@
   font-size: 1.5rem;
 }
 
+// My-code----------------------------------------
+
 .navbar-collapse {
   &__block {
     position: absolute;
-    min-width: 300px;
+    min-width: 375px;
 
     right: 10px;
     top: 13px;
 
     border-radius: 12px 1px 12px 12px;
-    padding: 15px;
+    padding: 15px 15px;
     display: none;
     background-color: #2C71B8;
 
@@ -191,7 +193,7 @@
 }
 
 .cart-body {
-  &__text {
+  &__counter {
     font-family: Arial, Helvetica, sans-serif;
     text-align: center;
     font-size: 18px;
@@ -202,6 +204,23 @@
     justify-content: center;
     color: #ffffff;
     font-size: 15px;
+  }
+}
+
+.cart-content {
+  display: none;
+
+  
+}
+
+.buttons {
+  display: none;
+  justify-content: space-around;
+
+  &__link {
+    color:  #ffffff ;
+    padding: 8px 8px;
+    background-color: #6195CA;
   }
 }
 

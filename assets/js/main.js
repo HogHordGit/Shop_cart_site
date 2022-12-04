@@ -76,7 +76,9 @@ const btnClickHandler = function(e) {
 };
 
 //Cart_btn------------------------------------------------------------
-const blockText = document.querySelector(".cart-body__text");
+const blockText = document.querySelector(".cart-body__counter");
+const btnsContainer = document.querySelector(".buttons");
+const itemsContainer = document.querySelector(".cart-content");
 
 function updateCounter() {
     let text = null;
@@ -86,17 +88,15 @@ function updateCounter() {
     blockText.innerHTML = `В корзине ${cartCounter} ${text}`;
 }
 
-function makeLayout() {
-
-    blockText.innerHTML = `В корзине ${cartCounter} товаров`;
-
-}
-
 function handleCart(e) {
     const textZero = document.querySelector(".cart-body__text-sm");
     const block = document.querySelector(".cart-block");
 
     const target = e.target;
+
+    if (!cartCounter) {
+        blockText.innerHTML = `В корзине ${cartCounter} товаров`;
+    }
     
     if (target && (target.classList.contains("fa-shopping-cart") || 
     target.classList.contains("page-header__cart-btn"))) {
@@ -108,6 +108,9 @@ function handleCart(e) {
             textZero.style.display = "block";
         } else {
             textZero.style.display = "none";
+            btnsContainer.style.display = "flex";
+            itemsContainer.style.display = "block";
+
             addGoodIntoArr(target);
         }
     }
@@ -125,6 +128,7 @@ function findName(arr, check) {
 }
 
 function addGoodIntoArr(t) {
+    console.log(Goods);
     if(cartCounter > 1) {
         if (findName(Goods, getNameGood(t))) {
             return;
@@ -142,11 +146,32 @@ function addGoodIntoArr(t) {
     );
 }
 
-function readAndCreateFromArr() {
-    
+function createLayOut() {
+    const container = document.createElement("div");
+
+    const item = document.createElement("div");
+    item.classList.add("cart-conten__item");
+
+    const left = document.createElement("div");
+    left.classList.add("cart-content__left");
+    const img = document.createElement("img");
+    img.classList.add("cart-content__img");
+
+    const right = document.createElement("div");
+    right.classList.add("cart-content__right");
+    const name = document.createElement("div");
+    name.classList.add("cart-content__name");
+    const desc = document.createElement("div");
+    desc.classList.add("cart-content__des");
+
+    return {container, item, left, img, right, name, desc};
 }
 
-makeLayout();
+function readAndCreateFromArr() {
+    const obj = createLayOut();
+
+    
+}
 
 contentContainer.addEventListener("click", btnClickHandler);
 document.body.addEventListener("click", handleCart);
