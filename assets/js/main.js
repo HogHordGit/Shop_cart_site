@@ -168,6 +168,7 @@ function createLayOut() {
     right.classList.add("cart-content__right");
     const close = document.createElement("div");
     close.classList.add("cart-content__close");
+    close.innerHTML = "X";
     const name = document.createElement("div");
     name.classList.add("cart-content__name");
     const desc = document.createElement("div");
