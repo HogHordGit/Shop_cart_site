@@ -106,6 +106,8 @@ function handleCart(e) {
     if (target && target.classList.contains("item-actions__cart")){
         if (cartCounter === 0) {
             textZero.style.display = "block";
+            btnsContainer.style.display = "none";
+            itemsContainer.style.display = "none";
         } else {
             textZero.style.display = "none";
             btnsContainer.style.display = "flex";
@@ -131,6 +133,7 @@ function addGoodIntoArr(t) {
     console.log(Goods);
     if(cartCounter > 1) {
         if (findName(Goods, getNameGood(t))) {
+            readAndCreateFromArr(true);
             return;
         }
     }
@@ -144,13 +147,14 @@ function addGoodIntoArr(t) {
             count: 1
         }
     );
+    readAndCreateFromArr();
 }
 
 function createLayOut() {
-    const container = document.createElement("div");
+    const container = document.querySelector(".cart-content");
 
     const item = document.createElement("div");
-    item.classList.add("cart-conten__item");
+    item.classList.add("cart-content__item");
 
     const left = document.createElement("div");
     left.classList.add("cart-content__left");
@@ -159,18 +163,30 @@ function createLayOut() {
 
     const right = document.createElement("div");
     right.classList.add("cart-content__right");
+    const close = document.createElement("div");
+    close.classList.add("cart-content__close");
     const name = document.createElement("div");
     name.classList.add("cart-content__name");
     const desc = document.createElement("div");
     desc.classList.add("cart-content__des");
 
-    return {container, item, left, img, right, name, desc};
+    container.append(item);
+    item.append(left);
+    item.append(right);
+    left.append(img);
+    right.append(close);
+    right.append(name);
+    right.append(desc);
+
+    return {img, name, desc};
 }
 
-function readAndCreateFromArr() {
-    const obj = createLayOut();
-
-    
+function readAndCreateFromArr(flag = false) {
+    if (!flag) {
+        const obj = createLayOut();
+    } else {
+        
+    }
 }
 
 contentContainer.addEventListener("click", btnClickHandler);
