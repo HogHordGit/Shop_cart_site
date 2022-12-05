@@ -48,7 +48,10 @@ const getMockData = (t) => +t.
             innerHTML.
             replace(/(?:\W|\D+)(\d+)\W\D+(\d+)\W\D+/, "$1.$2");
 
-const getPrice = (t, price) => Math.round(price + getMockData(t) * 100) / 100;
+const getPrice = (t, price) => {
+    return Math.round((price + getMockData(t)) * 100) / 100;
+};
+
 
 const btnClickHandler = function(e) {
     const target = e.target;
@@ -59,7 +62,7 @@ const btnClickHandler = function(e) {
 
     if (target && target.classList.contains("item-actions__cart")) {
         cartCounter = incrementCounter(cartCounterLabel, cartCounter);
-        cartPrise += getPrice(target, cartPrise);
+        cartPrise = getPrice(target, cartPrise);
         updateCounter();
 
         disableControls(target, btnClickHandler);
@@ -122,7 +125,7 @@ function findName(arr, check) {
     for (let i = 0; i < arr.length; i++) {
         if (arr[i].name === check) {
             arr[i].count += 1;
-            arr[i].totalPrice *= 2;
+            arr[i].totalPrice = Math.round((arr[i].totalPrice + arr[i].price) * 100) / 100;
             return true;
         }
     }
@@ -133,7 +136,7 @@ function addGoodIntoArr(t) {
     console.log(Goods);
     if(cartCounter > 1) {
         if (findName(Goods, getNameGood(t))) {
-            readAndCreateFromArr(true);
+            addGoodsInCart(true);
             return;
         }
     }
@@ -147,7 +150,7 @@ function addGoodIntoArr(t) {
             count: 1
         }
     );
-    readAndCreateFromArr();
+    addGoodsInCart();
 }
 
 function createLayOut() {
@@ -168,7 +171,7 @@ function createLayOut() {
     const name = document.createElement("div");
     name.classList.add("cart-content__name");
     const desc = document.createElement("div");
-    desc.classList.add("cart-content__des");
+    desc.classList.add("cart-content__desc");
 
     container.append(item);
     item.append(left);
@@ -181,12 +184,24 @@ function createLayOut() {
     return {img, name, desc};
 }
 
-function readAndCreateFromArr(flag = false) {
-    if (!flag) {
-        const obj = createLayOut();
-    } else {
-        
+function addGoodsInCart(flag = false) {
+
+    if (cartCounter > 1) {
+        const arr = document.querySelectorAll(".cart-content__item");
+
+        for (let i = 0; i < arr.length; i++) {
+            arr[i].remove();
+        }
     }
+
+    for (let i = 0; i < Goods.length; i++) {
+        const obj = createLayOut();
+
+        obj.img.setAttribute("src", Goods[i].img);
+        obj.name.innerHTML = Goods[i].name;
+        obj.desc.innerHTML = `-${Goods[i].count} шт. цена: ${Goods[i].price} сума: ${Goods[i].totalPrice}`;
+    }
+
 }
 
 contentContainer.addEventListener("click", btnClickHandler);
