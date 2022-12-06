@@ -8380,6 +8380,8 @@ a.text-dark:focus
     display: -ms-flexbox;
     display: flex;
 
+    text-align: center;
+
     color: #fff;
 
     -webkit-box-pack: center;

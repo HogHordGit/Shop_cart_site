@@ -82,6 +82,9 @@ const btnClickHandler = function(e) {
 const blockText = document.querySelector(".cart-body__counter");
 const btnsContainer = document.querySelector(".buttons");
 const itemsContainer = document.querySelector(".cart-content");
+const textZero = document.querySelector(".cart-body__text-sm");
+
+let countClose = 0;
 
 function updateCounter() {
     let text = null;
@@ -92,8 +95,11 @@ function updateCounter() {
 }
 
 function handleCart(e) {
-    const textZero = document.querySelector(".cart-body__text-sm");
+    //Переписать это в первый хендлер
+    //баг с айтемом, когда остается 2 товара
+
     const block = document.querySelector(".cart-block");
+    const interval = 2000;
 
     const target = e.target;
 
@@ -117,8 +123,6 @@ function handleCart(e) {
             itemsContainer.style.display = "block";
 
             addGoodIntoArr(target);
-
-            //убирать кнорки и ставить начальный текст
         }
     }
 }
@@ -135,7 +139,6 @@ function findName(arr, check) {
 }
 
 function addGoodIntoArr(t) {
-    console.log(Goods);
     if(cartCounter > 1) {
         if (findName(Goods, getNameGood(t))) {
             addGoodsInCart();
@@ -171,7 +174,8 @@ function createLayOut() {
 
     const close = document.createElement("div");
     close.classList.add("cart-content__close");
-    close.setAttribute("data-to-close", cartCounter - 1);
+    close.setAttribute("data-to-close", countClose);
+    countClose++;
     close.innerHTML = "X";
     close.addEventListener("click", handleClose);
 
@@ -198,9 +202,11 @@ function addGoodsInCart() {
         for (let i = 0; i < arr.length; i++) {
             arr[i].remove();
         }
+        countClose = 0;
     }
 
     for (let i = 0; i < Goods.length; i++) {
+        console.log("zib", Goods, i);
         const obj = createLayOut();
 
         obj.img.setAttribute("src", Goods[i].img);
@@ -213,21 +219,30 @@ function handleClose(e) {
     const target = e.target;
 
     if (target && target.classList.contains("cart-content__close")) {
+        console.log(Goods);
+
         const arr = document.querySelectorAll(".cart-content__item");
 
         arr[target.dataset.toClose].remove();
+
         cartCounter -= Goods[target.dataset.toClose].count;
         Goods.splice(target.dataset.toClose, 1);
 
+        console.log(Goods);
+
         if (cartCounter === 0) {
-            cartCounter = 0;
             cartCounterLabel.style.display = "none";
+            textZero.style.display = "block";
+            btnsContainer.style.display = "none";
+            itemsContainer.style.display = "none";
         }
         if (cartCounter > 0) {
             cartCounterLabel.innerHTML = cartCounter;
+            addGoodsInCart();
         }
-        
-        //баг, когда много айтемов не работает удаление
+
+        blockText.innerHTML = `В корзине ${cartCounter} товаров`;
+    
     }
 }
 
