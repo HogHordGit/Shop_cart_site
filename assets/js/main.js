@@ -1,11 +1,13 @@
 const contentContainer = document.querySelector("#content-container");
 const cartCounterLabel = document.querySelector("#cart-counter-label");
+const cartCounterPrise = document.querySelector(".count-prise");
 
 const block = document.querySelector("#navbarSupportedContent");
 
 let Goods = [];
 let cartCounter = 0;
 let cartPrise = 0;
+let countClose = 0;
 
 const incrementCounter = (label, ctr) => {
     const counter = ++ctr;
@@ -63,6 +65,9 @@ const btnClickHandler = function(e) {
     if (target && target.classList.contains("item-actions__cart")) {
         cartCounter = incrementCounter(cartCounterLabel, cartCounter);
         cartPrise = getPrice(target, cartPrise);
+
+        cartCounterPrise.innerHTML = `Сумарная цена товаров: ${cartPrise}$`;
+
         updateCounter();
 
         disableControls(target, btnClickHandler);
@@ -79,12 +84,10 @@ const btnClickHandler = function(e) {
 };
 
 //Cart_btn------------------------------------------------------------
+const cartBlock = document.querySelector(".cart-block");
 const blockText = document.querySelector(".cart-body__counter");
-const btnsContainer = document.querySelector(".buttons");
-const itemsContainer = document.querySelector(".cart-content");
-const textZero = document.querySelector(".cart-body__text-sm");
 
-let countClose = 0;
+//Переписать это в первый хендлер и исправить баг с нажатиями на кнопки
 
 function updateCounter() {
     let text = null;
@@ -95,14 +98,6 @@ function updateCounter() {
 }
 
 function handleCart(e) {
-    //Переписать это в первый хендлер и исправить баг с нажатиями на кнопки
-    //баг с айтемом, когда остается 2 товара
-    //сделать счетчик сумы в блоке
-    //удаление всех товаров хендлер
-
-    const block = document.querySelector(".cart-block");
-    const interval = 2000;
-
     const target = e.target;
 
     if (!cartCounter) {
@@ -111,21 +106,53 @@ function handleCart(e) {
     
     if (target && (target.classList.contains("fa-shopping-cart") || 
     target.classList.contains("page-header__cart-btn"))) {
-        block.classList.toggle("-active");
+        cartBlock.classList.toggle("-active");
     }
     
     if (target && target.classList.contains("item-actions__cart")){
-        if (cartCounter === 0) {
-            textZero.style.display = "block";
-            btnsContainer.style.display = "none";
-            itemsContainer.style.display = "none";
-        } else {
-            textZero.style.display = "none";
-            btnsContainer.style.display = "flex";
-            itemsContainer.style.display = "block";
 
-            addGoodIntoArr(target);
+        showBlock();
+
+        addGoodIntoArr(target);
+    }
+}
+
+function handleClose(e) {
+    const target = e.target;
+
+    if (target && target.classList.contains("cart-content__close")) {
+        const arr = document.querySelectorAll(".cart-content__item");
+
+        arr[target.dataset.toClose].remove();
+
+        cartPrise -= Goods[target.dataset.toClose].totalPrice;
+        cartCounter -= Goods[target.dataset.toClose].count;
+        Goods.splice(target.dataset.toClose, 1);
+
+        showBlock();
+
+        console.log(cartCounter);
+        if (cartCounter > 0) {
+            addGoodsInCart();
         }
+
+        cartCounterLabel.innerHTML = cartCounter;
+        blockText.innerHTML = `В корзине ${cartCounter} товаров`;
+        cartCounterPrise.innerHTML = `Сумарная цена товаров: ${cartPrise}$`;
+    }
+}
+
+function clearCartHandler(e) {
+    const target = e.target;
+
+    if(target && target.classList.contains("clear-cart")) {
+        clearCart();
+
+        showBlock();
+
+        Goods = [];
+        cartPrise = 0;
+        cartCounter = 0;
     }
 }
 
@@ -197,18 +224,21 @@ function createLayOut() {
     return {img, name, desc};
 }
 
-function addGoodsInCart() {
-    if (cartCounter > 1) {
-        const arr = document.querySelectorAll(".cart-content__item");
+function clearCart() {
+    const arr = document.querySelectorAll(".cart-content__item");
 
-        for (let i = 0; i < arr.length; i++) {
-            arr[i].remove();
-        }
-        countClose = 0;
+    for (let i = 0; i < arr.length; i++) {
+        arr[i].remove();
+    }
+    countClose = 0;
+}
+
+function addGoodsInCart() {
+    if (cartCounter >= 1) {
+        clearCart();
     }
 
     for (let i = 0; i < Goods.length; i++) {
-        console.log("zib", Goods, i);
         const obj = createLayOut();
 
         obj.img.setAttribute("src", Goods[i].img);
@@ -217,36 +247,22 @@ function addGoodsInCart() {
     }
 }
 
-function handleClose(e) {
-    const target = e.target;
+function showBlock() {
+    const btnsContainer = document.querySelector(".buttons");
+    const itemsContainer = document.querySelector(".cart-content");
+    const textZero = document.querySelector(".cart-body__text-sm");
 
-    if (target && target.classList.contains("cart-content__close")) {
-        console.log(Goods);
-
-        const arr = document.querySelectorAll(".cart-content__item");
-
-        arr[target.dataset.toClose].remove();
-
-        cartCounter -= Goods[target.dataset.toClose].count;
-        Goods.splice(target.dataset.toClose, 1);
-
-        console.log(Goods);
-
-        if (cartCounter === 0) {
-            cartCounterLabel.style.display = "none";
-            textZero.style.display = "block";
-            btnsContainer.style.display = "none";
-            itemsContainer.style.display = "none";
-        }
-        if (cartCounter > 0) {
-            cartCounterLabel.innerHTML = cartCounter;
-            addGoodsInCart();
-        }
-
-        blockText.innerHTML = `В корзине ${cartCounter} товаров`;
-    
-    }
+    textZero.style.display = cartCounter ? "none" : "block";
+    btnsContainer.style.display = cartCounter ? "flex" : "none";
+    itemsContainer.style.display = cartCounter ? "block" : "none";
+    cartCounterPrise.style.display = cartCounter ? "flex" : "none";
+    cartCounterLabel.style.display = cartCounter ? "block" : "none";
 }
 
 contentContainer.addEventListener("click", btnClickHandler);
+
 document.body.addEventListener("click", handleCart);
+
+cartBlock.addEventListener("click", clearCartHandler);
+
+

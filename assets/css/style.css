@@ -8479,6 +8479,21 @@ a.text-dark:focus
     color: #fff;
 }
 
+.count-prise
+{
+    font-size: 20px;
+
+    display: none;
+
+    margin-bottom: 10px;
+
+    color: #fff;
+
+    -webkit-box-pack: center;
+    -ms-flex-pack: center;
+    justify-content: center;
+}
+
 .buttons
 {
     display: none;
